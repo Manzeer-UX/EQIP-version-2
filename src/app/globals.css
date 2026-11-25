@@ -1,0 +1,799 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   EQIP design tokens: values from the EQIP Brand Guidelines 1.0 (Figma).
+   The palette is reset so only brand colours can be used.
+   ------------------------------------------------------------------ */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-ink-950: #070a12;
+  --color-navy-900: #0f1724;
+  --color-navy-800: #152033;
+  --color-navy-700: #243044;
+  --color-graphite-700: #3a404b;
+  --color-graphite-500: #646b78;
+  --color-graphite-300: #9aa8bd;
+  --color-paper-50: #fbfaf7;
+  --color-paper-100: #f4f1ea;
+  --color-paper-200: #e6e1d6;
+  --color-paper-300: #cfc8ba;
+  --color-signal-400: #38bdf8;
+  --color-signal-600: #0a84ff;
+  --color-pass: #34d399;
+  --color-warn: #fbbf24;
+  --color-fail: #f87171;
+
+  --radius-*: initial;
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-in-out: cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+@theme inline {
+  --font-display: var(--font-space-grotesk), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ------------------------------------------------------------------
+   Type scale (Figma text styles, made fluid). Display tracking relaxes
+   on small screens so letters never crush.
+   ------------------------------------------------------------------ */
+/* Hero: three set lines, sized by width and height so the hero fits one screen. */
+@utility type-hero {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.75rem, min(4.4vw, 9.5vh), 5.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.028em;
+  @media (width >= 64rem) {
+    letter-spacing: -0.038em;
+  }
+}
+@utility type-display-xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(3rem, 1.2rem + 7.6vw, 10.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  @media (width >= 64rem) {
+    letter-spacing: -0.04em;
+  }
+}
+@utility type-display-l {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.625rem, 1.45rem + 5vw, 7rem);
+  line-height: 0.97;
+  letter-spacing: -0.028em;
+  @media (width >= 64rem) {
+    letter-spacing: -0.035em;
+  }
+}
+@utility type-display-m {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 1.3rem + 3.5vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  @media (width >= 64rem) {
+    letter-spacing: -0.03em;
+  }
+}
+/* Section headlines that sit beside a drawing. */
+@utility type-display-s {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 1.25rem + 2.1vw, 3.125rem);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  @media (width >= 64rem) {
+    letter-spacing: -0.028em;
+  }
+}
+@utility type-heading-l {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.875rem, 1.35rem + 1.7vw, 3rem);
+  line-height: 1.125;
+  letter-spacing: -0.02em;
+}
+@utility type-heading-m {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 1.25rem + 0.85vw, 2rem);
+  line-height: 1.19;
+  letter-spacing: -0.015em;
+}
+@utility type-heading-s {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 1.15rem + 0.35vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+@utility type-body-l {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(1.125rem, 1.04rem + 0.36vw, 1.375rem);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+@utility type-body-m {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(1.0625rem, 1.03rem + 0.12vw, 1.125rem);
+  line-height: 1.56;
+  letter-spacing: -0.002em;
+}
+@utility type-body-s {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 0.9375rem;
+  line-height: 1.47;
+}
+/* Mono means machine: system labels, IDs and statuses only. */
+@utility type-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+@utility type-data {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-status {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  line-height: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Page shell: 1440 max, brand 96px margin at desktop. */
+@utility shell {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 6rem);
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    --header-h: 5.5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 0;
+    background-color: var(--color-ink-950);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-paper-100);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.56;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-signal-400);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal-400);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  [data-surface="paper"] {
+    color-scheme: light;
+  }
+  [data-surface="paper"] :focus-visible {
+    outline-color: var(--color-signal-600);
+  }
+  [data-surface="paper"] ::selection {
+    background-color: var(--color-ink-950);
+    color: var(--color-paper-100);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Layout: on desktop every section is one screen, content centred.
+   On phones sections flow naturally.
+   ------------------------------------------------------------------ */
+@utility section-screen {
+  padding-top: calc(var(--header-h) + 1.5rem);
+  padding-bottom: 4.5rem;
+  @media (width >= 64rem) {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: calc(var(--header-h) + 1rem);
+    padding-bottom: 2.5rem;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Motion. Progressive enhancement throughout: content is visible
+   without JavaScript, and reduced-motion users get none of it.
+   ------------------------------------------------------------------ */
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 0.9rem, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes trace-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes signal-on {
+  from { fill: var(--color-ink-950); }
+  to { fill: var(--color-signal-400); }
+}
+@keyframes word-rise {
+  from { transform: translate3d(0, 108%, 0); }
+  to { transform: none; }
+}
+@keyframes scan-sweep {
+  0% { transform: translateX(-8px); opacity: 0; }
+  5% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { transform: translateX(566px); opacity: 0; }
+}
+@keyframes menu-in {
+  from { opacity: 0; transform: translate3d(0, 0.75rem, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes progress-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes running {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
+}
+
+/* Page-load motion (CSS only, never waits on JavaScript) */
+.load-rise {
+  animation: rise 900ms var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+.load-fade {
+  animation: fade-in 900ms var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Headlines: each word rises out of its own line slot. */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.split-inner {
+  display: inline-block;
+  transition: transform 1000ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 42ms + var(--reveal-delay, 0ms));
+}
+.load-words .split-inner {
+  animation: word-rise 1100ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 80ms);
+}
+[data-reveal-words][data-state="armed"] .split-inner {
+  transform: translate3d(0, 108%, 0);
+}
+
+/* Blocks fade and rise. */
+[data-reveal] {
+  transition:
+    opacity 800ms var(--ease-out),
+    transform 800ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal][data-state="armed"] {
+  opacity: 0;
+  transform: translate3d(0, 1rem, 0);
+}
+
+/* Section rules draw from the left: the section transition. */
+.rule-line {
+  transform-origin: left center;
+  transition: transform 1400ms var(--ease-in-out);
+}
+.rule-label {
+  transition: opacity 700ms var(--ease-out) 300ms;
+}
+[data-reveal-rule][data-state="armed"] .rule-line {
+  transform: scaleX(0);
+}
+[data-reveal-rule][data-state="armed"] .rule-label {
+  opacity: 0;
+}
+
+/* Diagrams: traces draw and parts fade once the figure enters view. */
+.trace-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1400ms var(--ease-in-out);
+  transition-delay: var(--d, 0ms);
+}
+[data-draw][data-state="armed"] .trace-draw {
+  stroke-dashoffset: 1;
+}
+.fade-on-draw {
+  transition: opacity 600ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+[data-draw][data-state="armed"] .fade-on-draw {
+  opacity: 0;
+}
+
+/* Hero estate scan: the estate resolves as the scan passes. */
+.scan-unknown {
+  animation: fade-in 600ms var(--ease-out) both 150ms;
+}
+.scan-node {
+  animation: fade-in 420ms var(--ease-out) both;
+  animation-delay: var(--at, 0ms);
+}
+.scan-trace {
+  stroke-dasharray: 1;
+  animation: trace-draw 700ms var(--ease-in-out) both;
+  animation-delay: var(--at, 0ms);
+}
+.scan-answer {
+  animation: signal-on 520ms var(--ease-out) both;
+  animation-delay: var(--at, 0ms);
+}
+.scan-line {
+  animation: scan-sweep var(--dur, 2400ms) cubic-bezier(0.45, 0.05, 0.35, 1) both;
+  animation-delay: var(--start, 700ms);
+}
+.scan-callout {
+  animation: rise 700ms var(--ease-out) both;
+  animation-delay: var(--at, 0ms);
+}
+
+/* Text links: the underline grows from the left. */
+.link-grow {
+  background-image: linear-gradient(var(--line-hover), var(--line-hover)), linear-gradient(var(--line), var(--line));
+  background-size: 0% 1px, 100% 1px;
+  background-position: 0 100%, 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 450ms var(--ease-out);
+  padding-bottom: 2px;
+  height: auto;
+}
+.link-grow:hover,
+.link-grow:focus-visible {
+  background-size: 100% 1px, 100% 1px;
+}
+
+/* Mobile menu items cascade in. */
+#mobile-menu:not([hidden]) .menu-item {
+  animation: menu-in 520ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 55ms + 60ms);
+}
+
+/* Auto-advance progress for interactive indexes. */
+.progress-run {
+  transform-origin: left center;
+  animation: progress-fill var(--run, 6000ms) linear both;
+}
+.progress-run.is-paused {
+  animation-play-state: paused;
+}
+
+/* A running check: indeterminate, because the activity is real. */
+.running-bar {
+  animation: running 1600ms var(--ease-in-out) infinite;
+}
+
+/* Evidence trail: each journey reads as one trace across the five questions. */
+.trail-cell {
+  position: relative;
+}
+.trail-cell + .trail-cell::before {
+  content: "";
+  position: absolute;
+  top: 0.72rem;
+  left: -1.5rem;
+  width: 1.1rem;
+  height: 1px;
+  background-color: var(--color-navy-700);
+  transition: background-color 300ms var(--ease-out);
+}
+.trail-cell + .trail-cell::after {
+  content: "";
+  position: absolute;
+  top: calc(0.72rem - 3px);
+  left: -0.45rem;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--color-navy-700);
+  background-color: var(--color-navy-900);
+  transition:
+    border-color 300ms var(--ease-out),
+    background-color 300ms var(--ease-out);
+}
+.group\/row:hover .trail-cell + .trail-cell::before {
+  background-color: var(--color-paper-100);
+}
+.group\/row:hover .trail-cell + .trail-cell::after {
+  border-color: var(--color-paper-100);
+  background-color: var(--color-navy-800);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .load-rise,
+  .load-fade,
+  .load-words .split-inner,
+  .scan-unknown,
+  .scan-node,
+  .scan-trace,
+  .scan-answer,
+  .scan-callout,
+  #mobile-menu:not([hidden]) .menu-item,
+  .running-bar,
+  .progress-run {
+    animation: none;
+  }
+  .scan-line {
+    display: none;
+  }
+  [data-reveal],
+  .split-inner,
+  .rule-line,
+  .rule-label,
+  .trace-draw,
+  .fade-on-draw,
+  .link-grow {
+    transition: none;
+  }
+  [data-reveal][data-state="armed"],
+  [data-reveal-words][data-state="armed"] .split-inner,
+  [data-reveal-rule][data-state="armed"] .rule-line {
+    opacity: 1;
+    transform: none;
+  }
+  [data-reveal-rule][data-state="armed"] .rule-label,
+  [data-draw][data-state="armed"] .fade-on-draw {
+    opacity: 1;
+  }
+  [data-draw][data-state="armed"] .trace-draw {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Problem: hovering a note (in the text or the list) lights its place in the drawing. */
+[data-notes] [data-note-target] .note-box,
+[data-notes] [data-note-target] .note-frame,
+[data-notes] .note-line {
+  transition:
+    fill 200ms var(--ease-out),
+    stroke 200ms var(--ease-out),
+    stroke-width 200ms var(--ease-out);
+}
+[data-notes]:has([data-note="1"]:hover) [data-note-target="1"] .note-box,
+[data-notes]:has([data-note="2"]:hover) [data-note-target="2"] .note-box,
+[data-notes]:has([data-note="3"]:hover) [data-note-target="3"] .note-box,
+[data-notes]:has([data-note="4"]:hover) [data-note-target="4"] .note-box {
+  fill: var(--color-signal-600);
+}
+[data-notes]:has([data-note="1"]:hover) [data-note-target="1"] .note-frame,
+[data-notes]:has([data-note="3"]:hover) [data-note-target="3"] .note-frame,
+[data-notes]:has([data-note="4"]:hover) [data-note-target="4"] .note-frame {
+  stroke: var(--color-signal-600);
+  stroke-width: 2px;
+}
+[data-notes]:has([data-note="2"]:hover) .note-line[data-note-target="2"] {
+  stroke: var(--color-signal-600);
+  stroke-width: 2px;
+}
+
+/* "we do not know yet." gets the dashed mark of an unknown, drawn in. */
+.answer-mark {
+  background-image: linear-gradient(to right, currentColor 55%, transparent 0);
+  background-size: 8px 1.5px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  padding-bottom: 0.08em;
+}
+
+/* Capabilities loop: the active stage plays its drawing; others rest. */
+.cap-col .cap-glyph {
+  transition: opacity 600ms var(--ease-out);
+}
+@media (width >= 64rem) {
+  .cap-col .cap-glyph {
+    opacity: 0.36;
+  }
+  .cap-col.is-active .cap-glyph {
+    opacity: 1;
+  }
+}
+.cap-col.is-active .cap-anim {
+  animation: fade-in 520ms var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+}
+.cap-col.is-active .cap-trace {
+  stroke-dasharray: 1;
+  animation: trace-draw 820ms var(--ease-in-out) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Context index: the stage crossfades and redraws for the chosen context. */
+.ctx-panel {
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 600ms var(--ease-out);
+}
+.ctx-panel[data-active="false"] {
+  opacity: 0;
+  transform: translate3d(0.75rem, 0, 0);
+  pointer-events: none;
+}
+.ctx-panel[data-active="true"] .trace-draw {
+  animation: trace-draw 1200ms var(--ease-in-out) both;
+  animation-delay: var(--d, 0ms);
+}
+.ctx-panel[data-active="true"] .fade-on-draw {
+  animation: fade-in 600ms var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cap-col .cap-glyph {
+    opacity: 1 !important;
+  }
+  .cap-col.is-active .cap-anim,
+  .cap-col.is-active .cap-trace,
+  .ctx-panel[data-active="true"] .trace-draw,
+  .ctx-panel[data-active="true"] .fade-on-draw {
+    animation: none;
+  }
+  .ctx-panel {
+    transition: none;
+  }
+}
+
+/* Hero estate reader: the frame glides between what it reads. */
+.reader-corner {
+  transition: transform 650ms var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reader-corner {
+    transition: none;
+  }
+}
+
+/* Hero on shorter laptop screens: tighten so the whole hero stays in one view. */
+@media (width >= 64rem) and (height < 50rem) {
+  .hero-fit .hero-copy {
+    font-size: 1.0625rem;
+    margin-top: 1.25rem;
+  }
+  .hero-fit .hero-ctas {
+    margin-top: 1.5rem;
+  }
+  .hero-fit .hero-tag {
+    margin-top: 2rem;
+  }
+}
+@media (width >= 64rem) and (height < 40rem) {
+  .hero-fit .hero-tag {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Ambient and hover motion across sections (all reduced-motion aware)
+   ------------------------------------------------------------------ */
+
+/* Problem diagram: hover a system to light every link it has. */
+[data-notes] .gap-node .note-frame {
+  transition: stroke-width 200ms var(--ease-out), stroke 200ms var(--ease-out);
+}
+[data-notes] .gap-node:hover .note-frame {
+  stroke-width: 2px;
+}
+[data-notes] .gap-link {
+  transition: stroke 200ms var(--ease-out), stroke-width 200ms var(--ease-out);
+}
+[data-notes]:has([data-node="portal"]:hover) .gap-link[data-link~="portal"],
+[data-notes]:has([data-node="orders"]:hover) .gap-link[data-link~="orders"],
+[data-notes]:has([data-node="billing"]:hover) .gap-link[data-link~="billing"],
+[data-notes]:has([data-node="pricing"]:hover) .gap-link[data-link~="pricing"],
+[data-notes]:has([data-node="erp"]:hover) .gap-link[data-link~="erp"],
+[data-notes]:has([data-node="legacy"]:hover) .gap-link[data-link~="legacy"],
+[data-notes]:has([data-node="manual"]:hover) .gap-link[data-link~="manual"] {
+  stroke: var(--color-signal-600);
+  stroke-width: 2px;
+}
+
+/* The question: a change ripples outwards and touches what nobody mapped. */
+@keyframes ripple-out {
+  0% { transform: scale(0.08); opacity: 0.9; }
+  80% { opacity: 0.15; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes ripple-touch {
+  0%, 100% { opacity: 0.3; }
+  8% { opacity: 1; }
+  30% { opacity: 0.3; }
+}
+.ripple-sq {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ripple-out 4.2s var(--ease-out) infinite;
+  animation-delay: var(--d, 0s);
+}
+.ripple-hit {
+  opacity: 0.3;
+  animation: ripple-touch 4.2s linear infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* Evidence trail: journeys take turns in focus until you point at one. */
+@keyframes row-focus {
+  0%, 28% { background-color: var(--color-navy-800); }
+  34%, 100% { background-color: transparent; }
+}
+.trail-auto .trail-row {
+  animation: row-focus 9s var(--ease-in-out) infinite;
+  animation-delay: calc(var(--i, 0) * 3s);
+}
+.trail-auto:hover .trail-row {
+  animation: none;
+}
+
+/* About: the reading core lights each layer as it passes. */
+@keyframes layer-read {
+  0%, 100% { fill: var(--color-paper-100); }
+  6% { fill: var(--color-ink-950); }
+  18% { fill: var(--color-paper-100); }
+}
+.strata-tick {
+  animation: layer-read 5s linear infinite;
+  animation-delay: var(--d, 0s);
+}
+.strata-layer .strata-fill {
+  transition: fill 300ms var(--ease-out);
+}
+.strata-layer:hover .strata-fill {
+  fill: var(--color-paper-50);
+}
+.strata-layer text {
+  transition: fill 300ms var(--ease-out);
+}
+.strata-layer:hover text {
+  fill: var(--color-ink-950);
+}
+
+/* Field: hovering a dossier sends a pulse along its story. */
+@keyframes dossier-run {
+  0% { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+.dossier-runner {
+  opacity: 0;
+}
+.group\/dossier:hover .dossier-runner {
+  animation: dossier-run 1.8s var(--ease-in-out) infinite;
+}
+
+/* Context drawings: generated code streams; diligence scans the application. */
+@keyframes tick-stream {
+  from { transform: translateX(0); }
+  to { transform: translateX(-9.4px); }
+}
+.tick-stream {
+  animation: tick-stream 0.9s linear infinite;
+}
+@keyframes module-scan {
+  0% { transform: translateX(0); opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { transform: translateX(296px); opacity: 0; }
+}
+.module-scan {
+  animation: module-scan 3.6s var(--ease-in-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-only {
+    display: none;
+  }
+  .ripple-sq,
+  .ripple-hit,
+  .trail-auto .trail-row,
+  .strata-tick,
+  .group\/dossier:hover .dossier-runner,
+  .tick-stream,
+  .module-scan {
+    animation: none;
+  }
+  .ripple-sq {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Shorter desktop screens (laptops): every section still fits one view.
+   Content scales in steps with the window height; side margins stay
+   aligned with the header because only the shell's children scale.
+   ------------------------------------------------------------------ */
+@media (width >= 64rem) and (height < 56rem) {
+  .section-screen {
+    padding-top: var(--header-h);
+    padding-bottom: 1rem;
+  }
+}
+@media (width >= 64rem) and (height < 52rem) {
+  .section-screen > .shell > * {
+    zoom: 0.92;
+  }
+  #where-it-matters button[aria-pressed="false"] .ctx-body {
+    display: none;
+  }
+}
+@media (width >= 64rem) and (height < 48rem) {
+  .section-screen > .shell > * {
+    zoom: 0.84;
+  }
+}
+@media (width >= 64rem) and (height < 44rem) {
+  .section-screen > .shell > * {
+    zoom: 0.78;
+  }
+}
+@media (width >= 64rem) and (height < 40rem) {
+  .section-screen > .shell > * {
+    zoom: 0.72;
+  }
+}
+
